@@ -861,6 +861,30 @@ class InstagramAPI:
                            '_csrftoken': self.token})
         return self.SendRequest('friendships/unblock/' + str(userId) + '/', self.generateSignature(data))
 
+    def mute(self, userId, option='both'):
+        """Mute userId, valid options are posts, stories or both
+        """
+        if option not in ('posts', 'stories', 'both'):
+            raise ValueError('Invalid option, valid ones are: {}'
+                             .format(option))
+
+        data_dict = {'_uuid': self.uuid,
+                     '_uid': self.username_id,
+                     '_csrftoken': self.token}
+
+        if option == 'stories':
+            data_dict['target_posts_author_id'] = userId
+        if option == 'posts':
+            data_dict['target_reel_author_id'] = userId
+        else:
+            data_dict['target_posts_author_id'] = userId
+            data_dict['target_reel_author_id'] = userId
+
+        data = json.dumps()
+
+        return self.SendRequest('friendships/mute_posts_or_story_from_follow/',
+                                self.generateSignature(data))
+
     def userFriendship(self, userId):
         data = json.dumps({'_uuid': self.uuid,
                            '_uid': self.username_id,
