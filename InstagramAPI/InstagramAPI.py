@@ -880,7 +880,7 @@ class InstagramAPI:
             data_dict['target_posts_author_id'] = userId
             data_dict['target_reel_author_id'] = userId
 
-        data = json.dumps()
+        data = json.dumps(data_dict)
 
         return self.SendRequest('friendships/mute_posts_or_story_from_follow/',
                                 self.generateSignature(data))
